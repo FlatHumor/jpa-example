@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Program
 {
+    @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
         EntityManager manager = UserService.getEntityManager();
@@ -20,7 +21,9 @@ public class Program
         manager.persist(user);
         manager.getTransaction().commit();
 
-        Query query = manager.createNamedQuery("User.findAll");
+        Query query = manager.createNamedQuery("User.findAll", User.class);
+        Query queryByUsername = manager.createNamedQuery("User.findByUsername", User.class);
+        queryByUsername.setParameter("username", "mark");
         List<User> users = query.getResultList();
         for (User u : users)
             System.out.println("Username" + u.getUsername());
